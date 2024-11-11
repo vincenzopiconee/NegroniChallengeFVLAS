@@ -10,16 +10,13 @@ import SwiftUI
 
 struct ShopView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello World")
-
+        NavigationView {
+            Text(" ")
+            .navigationTitle("HeroShop")
+            }
         }
-        .padding()
     }
-}
+
 
 #Preview {
     ShopView()

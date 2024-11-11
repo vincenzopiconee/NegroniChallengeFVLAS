@@ -9,14 +9,14 @@ import SwiftUI
 
 struct JourneyView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello World")
-
-        }
-        .padding()
+        
+        NavigationView {
+            Text(" ")
+            .navigationTitle("Journey")
+            .navigationBarItems(trailing: NavigationLink (destination: ChallengeListView(), label: {
+                Image(systemName: "list.bullet")
+            }))
+            }
     }
 }
 
