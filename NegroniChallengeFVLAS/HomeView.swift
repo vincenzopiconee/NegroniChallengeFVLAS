@@ -9,14 +9,23 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello World")
-
+        NavigationStack {
+            VStack{
+                
+            }
+            .navigationTitle("HeroFit")
+            
+            .navigationBarItems(leading: NavigationLink(
+                destination: SettingsView(),
+                label: {
+                    Image(systemName: "gear")
+                }), trailing: NavigationLink(
+                    destination: ProfileView(),
+                    label: {
+                        Image(systemName: "person")
+                    })
+            )
         }
-        .padding()
     }
 }
 
