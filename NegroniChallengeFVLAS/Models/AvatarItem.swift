@@ -15,6 +15,7 @@ class Item : Identifiable {
     var imageName: String
     var name: String
     var price: Int
+    var unlocked: Bool = false
     
     init(imageName: String, name: String, price: Int) {
         self.id = UUID()
