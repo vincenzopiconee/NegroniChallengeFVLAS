@@ -103,12 +103,12 @@ struct ItemData {
         Item(imageName: "herofitblueG 4", name: "Spirit Surge", price: 30, color: .magenta, category: .gloves, unlocked: true),
         
         //Aura
-        Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .green, category: .others),
-        Item(imageName: "AURARED", name: "Crimson Flame", price: 120, color: .red, category: .others),
-        Item(imageName: "AURAYELLOW", name: "Golden Glow", price: 120, color: .yellow, category: .others),
-        Item(imageName: "AURABLUE", name: "Azure Aura", price: 120, color: .blue, category: .others),
-        Item(imageName: "AURAROSE", name: "Radiant Rose", price: 120, color: .magenta, category: .others),
-        Item(imageName: "Group 5", name: "Angel Wings", price: 100, color: .purple, category: .others),
+        Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .green, category: .others, unlocked: true),
+        Item(imageName: "AURARED", name: "Crimson Flame", price: 120, color: .red, category: .others, unlocked: true),
+        Item(imageName: "AURAYELLOW", name: "Golden Glow", price: 120, color: .yellow, category: .others, unlocked: true),
+        Item(imageName: "AURABLUE", name: "Azure Aura", price: 120, color: .blue, category: .others, unlocked: true),
+        Item(imageName: "AURAROSE", name: "Radiant Rose", price: 120, color: .magenta, category: .others, unlocked: true),
+        Item(imageName: "Group 5", name: "Angel Wings", price: 100, color: .purple, category: .others, unlocked: true),
         Item(imageName: "Group 6", name: "Dragon Wings", price: 100, color: .cyan, category: .others, unlocked: true)
     ]
 }
