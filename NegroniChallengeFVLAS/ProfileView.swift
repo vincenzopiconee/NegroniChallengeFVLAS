@@ -118,7 +118,7 @@ struct ProfileView: View {
                 .padding()
                 .navigationTitle("Your Avatar")
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: Button("Add") { AddUser() },trailing: Button("Edit") {
+                .navigationBarItems(trailing: Button("Edit") {
                     showEditSheet.toggle()
                 })
                 .sheet(isPresented: $showEditSheet) {
@@ -127,10 +127,6 @@ struct ProfileView: View {
 
             }
         }
-    func AddUser() {
-        let user = User(wallet: 100, mask: Item(color: .red, category: .mask), cape: Item(color: .yellow, category: .cape), gloves: Item(color: .blue, category: .gloves))
-        modelContext.insert(user)
-    }
 }
 
 #Preview {
