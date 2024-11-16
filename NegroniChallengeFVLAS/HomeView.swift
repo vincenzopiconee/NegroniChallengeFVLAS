@@ -99,7 +99,7 @@ struct HomeView: View {
                 label: {
                     Image(systemName: "gear")
                 }), trailing: NavigationLink(
-                    destination: ProfileView(user: userExample),
+                    destination: ProfileView(),
                     label: {
                         Image(systemName: "person")
                     })

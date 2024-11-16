@@ -46,5 +46,5 @@ struct HeroShopItem: View {
 }
 
 #Preview {
-    HeroShopItem(item: Item(imageName: "herofitredM", name: "Blaze Band", price: 100))
+    HeroShopItem(item: Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask))
 }
