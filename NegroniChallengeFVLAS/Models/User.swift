@@ -8,27 +8,28 @@
 import SwiftUI
 import SwiftData
 
+
 @Model
 class User : Identifiable{
     var id: UUID = UUID()
-    var wardrobe: [Item]
-    var wallet: Int
-    @Transient var avatar: AnyView = AnyView(Image("herofitwithoutnothing")
-        .padding(.bottom, 30))
-    
-    init(wardrobe: [Item] = [], wallet: Int = 0, avatar: AnyView) {
-        self.id = UUID()
-        self.wardrobe = wardrobe
-        self.wallet = wallet
-        self.avatar = avatar
+    var wardrobe: [Item]? {
+        ItemData.items.filter { $0.unlocked }
     }
+    var wallet: Int = 0
+    
+    var mask: Item?
+    var cape: Item?
+    var gloves: Item?
+    var other: Item?
+    
+    init(wallet: Int = 0, mask: Item? = nil, cape: Item? = nil, gloves: Item? = nil, other: Item? = nil) {
+        self.id = UUID()
+        self.wallet = wallet
+        self.mask = mask
+        self.cape = cape
+        self.gloves = gloves
+        self.other = other
+    }
+    
+    
 }
-
-let userExample = User(
-    wardrobe: [
-        Item(imageName: "", name: "Blaze Band", price: 20),
-        Item(imageName: "", name: "Magma Cape", price: 40)
-    ],
-    wallet: 100,
-    avatar: AnyView(Image("herofitwithoutnothing"))
-)
