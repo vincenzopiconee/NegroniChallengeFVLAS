@@ -6,6 +6,8 @@
 //
 
 
+
+
 import SwiftData
 import UIKit
 
@@ -43,6 +45,7 @@ class Item : Identifiable {
     
     
     init(imageName: String = "", component: String = "", name: String = "", price: Int = 0, color: ItemColor = .nothing, category: Category = .others, unlocked: Bool = false) {
+
         self.id = UUID()
         self.imageName = imageName
         self.component = component
@@ -53,7 +56,6 @@ class Item : Identifiable {
         self.color = color
     }
 }
-
 struct ItemData {
     static let items: [Item] = [
         //Default
