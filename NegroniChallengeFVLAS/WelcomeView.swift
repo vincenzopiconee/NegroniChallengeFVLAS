@@ -59,7 +59,7 @@ struct WelcomeView: View {
         }
     }
     func AddUser() {
-        let user = User(wallet: 100, mask: Item(color: .red, category: .mask), cape: Item(color: .yellow, category: .cape), gloves: Item(color: .blue, category: .gloves))
+        let user = User()
         modelContext.insert(user)
     }
     
