@@ -28,12 +28,30 @@ struct EditProfileView: View {
                                cape: selectedCape ?? user.cape,
                                gloves: selectedGloves ?? user.gloves,
                                other: selectedOther ?? user.other)
+                        .frame(height: 440)
+                    
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 5) {
-                            WardrobeSection(title: "Masks:", items: user.wardrobe?.filter { $0.category == .mask } ?? [], selection: $selectedMask)
-                            WardrobeSection(title: "Capes:", items: user.wardrobe?.filter { $0.category == .cape } ?? [], selection: $selectedCape)
-                            WardrobeSection(title: "Gloves:", items: user.wardrobe?.filter { $0.category == .gloves } ?? [], selection: $selectedGloves)
-                            WardrobeSection(title: "Others:", items: user.wardrobe?.filter { $0.category == .others } ?? [], selection: $selectedOther)
+                            WardrobeSection(
+                                title: "Masks:",
+                                items: user.wardrobe?.filter { $0.category == .mask } ?? [],
+                                selection: $selectedMask
+                            )
+                            WardrobeSection(
+                                title: "Capes:",
+                                items: user.wardrobe?.filter { $0.category == .cape } ?? [],
+                                selection: $selectedCape
+                            )
+                            WardrobeSection(
+                                title: "Gloves:",
+                                items: user.wardrobe?.filter { $0.category == .gloves } ?? [],
+                                selection: $selectedGloves
+                            )
+                            WardrobeSection(
+                                title: "Others:",
+                                items: user.wardrobe?.filter { $0.category == .others } ?? [],
+                                selection: $selectedOther
+                            )
                         }
                     }
                 }
@@ -42,17 +60,23 @@ struct EditProfileView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading: Button("Cancel") {
                     dismiss()
-                },trailing: Button("Save") {
+                }, trailing: Button("Save") {
                     saveChanges(for: user)
                     dismiss()
                 })
+                .onAppear {
+                    // Inizializza i valori selezionati con quelli attualmente assegnati all'utente
+                    selectedMask = user.mask
+                    selectedCape = user.cape
+                    selectedGloves = user.gloves
+                    selectedOther = user.other
+                }
             }
         } else {
             Text("No user found")
                 .font(.headline)
                 .foregroundColor(.gray)
         }
-        
     }
     
     private func saveChanges(for user: User) {
@@ -64,6 +88,7 @@ struct EditProfileView: View {
         try? modelContext.save()
     }
 }
+
 
 #Preview {
     EditProfileView()
