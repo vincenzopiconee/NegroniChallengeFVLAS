@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
-    
-    
     
     let texts = [
         "Today is your day – make it count!",
@@ -55,6 +54,8 @@ struct HomeView: View {
 
         ]
     
+    @Query var users: [User]
+    
     @State private var currentText: String = ""
     
     func getTextForToday() -> String {
@@ -72,16 +73,16 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            VStack{
+            VStack (spacing: 70){
                 ZStack{
                     Rectangle()
                         .foregroundColor(.clear)
-                        .frame(width: 318.0, height: 68.0)
+                        .frame(width: 318.0, height: 55)
                         .background(Color(white: 1.0))
                         .cornerRadius(22.1)
                         .shadow(color: .red, radius: 4.0, x: 0.0, y: 0.0)
                     Text(currentText)
-                        .font(.custom("SFPro-Medium", size: 14.52))
+                        .font(.custom("Arial-ItalicMT", size: 15))
                         .foregroundColor(Color(white: 0.0))
                         .multilineTextAlignment(.center)
                         .frame(width: 299.3, height: 50.0, alignment: .center)
@@ -94,36 +95,37 @@ struct HomeView: View {
                                     }
                     
                 }
-                .padding(.bottom, 60)
-                Image("herofitwithoutnothing")
-                    .padding(.bottom, 30)
-                Text("Your score")
-                    .font(.custom("SFPro-Regular", size: 18.0))
-                    .foregroundColor(Color(white: 0.0))
-                    .frame(width: 86.0, height: 18.0)
-                    .padding(.trailing, 220)
-                ZStack{
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 325.0, height: 19.0)
-                        .background(Color(white: 240.0 / 255.0))
-                        .cornerRadius(29.4)
-                    HStack{
+                AvatarView(mask: users.first?.mask, cape: users.first?.cape, gloves: users.first?.gloves, other: users.first?.other)
+                VStack {
+                    Text("Your score")
+                        .font(.system(size: 18))
+                        .foregroundColor(Color(white: 0.0))
+                        .frame(width: 86.0, height: 18.0)
+                        .padding(.trailing, 220)
+                    ZStack{
                         Rectangle()
                             .foregroundColor(.clear)
-                            .frame(width: 282.0, height: 19.0)
-                            .background(LinearGradient(
-                                stops: [
-                                    Gradient.Stop(color: Color(red: 215.0 / 255.0, green: 42.0 / 255.0, blue: 26.0 / 255.0), location: 0.0),
-                                    Gradient.Stop(color: Color(red: 244.0 / 255.0, green: 6.0 / 255.0, blue: 125.0 / 255.0), location: 1.0)],
-                                startPoint: .leading,
-                                endPoint: .trailing))
+                            .frame(width: 325.0, height: 19.0)
+                            .background(Color(white: 240.0 / 255.0))
                             .cornerRadius(29.4)
-                        Text("84%")
-                            .font(.custom("SFPro-Regular", size: 16.0))
-                            .foregroundColor(Color(white: 0.0))
-                            .multilineTextAlignment(.center)
-                            .frame(width: 36.0, height: 13.0, alignment: .center)
+                        HStack{
+                            Rectangle()
+                                .foregroundColor(.clear)
+                                .frame(width: 282.0, height: 19.0)
+                                .background(LinearGradient(
+                                    stops: [
+                                        Gradient.Stop(color: Color(red: 215.0 / 255.0, green: 42.0 / 255.0, blue: 26.0 / 255.0), location: 0.0),
+                                        Gradient.Stop(color: Color(red: 244.0 / 255.0, green: 6.0 / 255.0, blue: 125.0 / 255.0), location: 1.0)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing))
+                                .cornerRadius(29.4)
+                            Text("84%")
+                                .font(.system(size: 16))
+                                .foregroundColor(Color(white: 0.0))
+                                .multilineTextAlignment(.center)
+                                .frame(width: 36.0, height: 13.0, alignment: .center)
+                        }
+                        
                     }
                     
                 }
