@@ -63,5 +63,6 @@ struct HeroShopItem: View {
 }
 
 #Preview {
-    HeroShopItem(item: Item(imageName: "herofitredM", name: "Blaze Band", price: 100), userWallet: 100, showPurchaseModal: .constant(false), selectedItem: .constant(nil))
+
+    HeroShopItem(item: Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask), userWallet: 100, showPurchaseModal: .constant(false), selectedItem: .constant(nil))
 }
