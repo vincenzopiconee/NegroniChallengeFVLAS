@@ -265,49 +265,49 @@ struct AvatarView: View {
                     Image("RedGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .orange:
                     Image("OrangeGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .blue:
                     Image("BlueGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .green:
                     Image("GreenGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .yellow:
                     Image("YellowGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .purple:
                     Image("PurpleGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .cyan:
                     Image("CyanGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .magenta:
                     Image("MagentaGloves")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 175)
+                        .frame(width: 176)
                         .padding(.top, 155)
                 case .nothing:
                     Text("")
@@ -317,7 +317,7 @@ struct AvatarView: View {
     }
 }
 #Preview {
-    AvatarView(mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .orange, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .green, category: .others))
+    AvatarView(mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .orange, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .red, category: .others))
 }
 
 //mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .orange, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .green, category: .others)
