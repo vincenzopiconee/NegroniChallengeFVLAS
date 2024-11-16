@@ -23,9 +23,7 @@ struct HeroShopItem: View {
                 .background(Color(white: 1.0))
                 .cornerRadius(17.0)
                 .shadow(color: Color(white: 0.0, opacity: 0.5), radius: 4.0, x: 0.0, y: 0.0)
-                .overlay(
-                    Color.black.opacity(userWallet >= item.price ? 0 : 0.4) // Se non puoi acquistare, oscura
-                )
+                
 
             Image(item.imageName)
                 .resizable()
@@ -53,6 +51,10 @@ struct HeroShopItem: View {
                 .padding(.top, 115)
                 .padding(.trailing, 20)
         }
+        .overlay(
+            Color.black.opacity(userWallet >= item.price ? 0 : 0.4) // Se non puoi acquistare, oscura
+                .cornerRadius(17)
+        )
         .onTapGesture {
             if userWallet >= item.price { // Solo se l'utente ha abbastanza punti
                 selectedItem = item // Seleziona l'item

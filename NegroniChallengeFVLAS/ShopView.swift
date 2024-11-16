@@ -9,14 +9,19 @@
 
 
 import SwiftUI
+import SwiftData
+
 
 struct ShopView: View {
+    
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(filter: #Predicate<Item> { !$0.unlocked }) var items: [Item]
+    
+    @Query var users: [User]
+    
     @State private var showPurchaseModal = false
     @State private var selectedItem: Item? = nil
-    @State private var user = userExample
-    
-    // Utilizzo di @State per monitorare items dinamici, mostrando solo quelli non sbloccati
-    @State private var items = ItemData.items.filter { !$0.unlocked }
     
     let columns = [
         GridItem(.flexible()),
@@ -24,26 +29,62 @@ struct ShopView: View {
         GridItem(.flexible())
     ]
     
+    let categoryOrder: [(category: Category, title: String)] = [
+        (.mask, "Masks:"),
+        (.cape, "Capes:"),
+        (.gloves, "Gloves:"),
+        (.others, "Others:")
+    ]
+    
     var body: some View {
+        
         NavigationView {
             ZStack {
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(items, id: \.id) { item in
-                            HeroShopItem(item: item, userWallet: user.wallet, showPurchaseModal: $showPurchaseModal, selectedItem: $selectedItem)
-                                .frame(maxWidth: .infinity)
-                                .onTapGesture {
-                                    if user.wallet >= item.price {
-                                        selectedItem = item
-                                        showPurchaseModal.toggle()
+                    let groupedItems = Dictionary(grouping: items, by: { $0.category })
+                                            
+                    ForEach(categoryOrder, id: \.category) { (category, title) in
+                        if let itemsInCategory = groupedItems[category], !itemsInCategory.isEmpty {
+                            Section(header: Text(title)
+                                .font(.headline)
+                                .padding(.vertical)
+                                .frame(maxWidth: .infinity, alignment: .leading)) {
+                                    LazyVGrid(columns: columns, spacing: 20) {
+                                        ForEach(itemsInCategory, id: \.id) { item in
+                                            HeroShopItem(item: item, userWallet: users.first?.wallet ?? 100, showPurchaseModal: $showPurchaseModal, selectedItem: $selectedItem)
+                                                .onTapGesture {
+                                                    if users.first?.wallet ?? 100 >= item.price {
+                                                        selectedItem = item
+                                                        showPurchaseModal.toggle()
+                                                    }
+                                                }
+                                        }
                                     }
                                 }
                         }
+                        
                     }
-                    .padding()
+                    .padding(.horizontal)
                 }
                 .navigationTitle("HeroShop")
-                
+                .toolbar {
+                    // HStack con i FitCoins nella barra di navigazione
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack(spacing: 5) {
+                            /*
+                            Text("FitCoins:")
+                                .font(.system(size: 17, weight: .semibold))
+                            */
+                            Image("superherobyfede")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25)
+                            Text("\(users.first?.wallet ?? 0)")
+                                .font(.system(size: 17, weight: .semibold))
+                        }
+                    }
+                    
+                }
                 // Modal di acquisto
                 if showPurchaseModal, let selectedItem = selectedItem {
                     ZStack {
@@ -61,7 +102,7 @@ struct ShopView: View {
                                 .padding(.top, 15)
                             
                             // Testo della domanda su una riga
-                            Text("Do you want to purchase \(selectedItem.name)?")
+                            Text("Do you want to unlock \(selectedItem.name)?")
                                 .font(.system(size: 14))
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 10)
@@ -70,22 +111,12 @@ struct ShopView: View {
                             HStack {
                                 Text("Price:")
                                     .fontWeight(.bold)
-                                Text("\(selectedItem.price) points")
+                                Text("\(selectedItem.price) FitCoins")
                             }
                             .padding(.bottom, 10)
                             
                             // Pulsanti di conferma e annullamento
                             HStack {
-                                Button(action: {
-                                    purchaseItem(selectedItem)
-                                }) {
-                                    Text("Unlock")
-                                        .fontWeight(.bold)
-                                        .frame(width: 140, height: 40)
-                                        .background(Color.red)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(8)
-                                }
                                 
                                 Button(action: {
                                     showPurchaseModal = false
@@ -97,6 +128,18 @@ struct ShopView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(8)
                                 }
+                                
+                                Button(action: {
+                                    purchaseItem(selectedItem)
+                                }) {
+                                    Text("Unlock")
+                                        .fontWeight(.bold)
+                                        .frame(width: 140, height: 40)
+                                        .background(Color.red)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+                                }
+                                
                             }
                             .padding(.bottom, 15)
                         }
@@ -105,23 +148,26 @@ struct ShopView: View {
                         .cornerRadius(20)
                         .shadow(radius: 10)
                     }
+                    
                 }
             }
         }
+        
     }
     
-    // Funzione per completare l’acquisto dell'item
     func purchaseItem(_ item: Item) {
-        if user.wallet >= item.price {
-            user.wallet -= item.price
-            if let index = ItemData.items.firstIndex(where: { $0.id == item.id }) {
-                ItemData.items[index].unlocked = true // Modifica la variabile unlocked dell'item acquistato
-            }
-            // Aggiorna items per mostrare solo quelli non sbloccati
-            items = ItemData.items.filter { !$0.unlocked }
-            showPurchaseModal = false
-        }
+        guard let user = users.first, user.wallet >= item.price else { return }
+            
+        user.wallet -= item.price
+        item.unlocked = true
+        
+        user.wardrobe?.append(item)
+            
+        try? modelContext.save()
+            
+        showPurchaseModal = false
     }
+    
 }
 
 #Preview {

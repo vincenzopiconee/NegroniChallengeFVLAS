@@ -13,7 +13,7 @@ struct NegroniChallengeFVLASApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: User.self)
+                .modelContainer(for: [User.self, Item.self])
         }
         
     }

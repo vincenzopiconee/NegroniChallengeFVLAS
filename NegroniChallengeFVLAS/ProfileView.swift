@@ -17,33 +17,11 @@ struct ProfileView: View {
     @Query var users: [User]
     
     @State private var showEditSheet = false
-
-    
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
         
     
     var body: some View {
             NavigationStack {
                     VStack (spacing: 1){
-                        /*
-                        HStack (spacing: 3){
-                            Text("Wallet:") // DA METTERE NELLO SHOP VIEW INVECE CHE NEL PROFILE VIEW
-                                .font(.system(size: 17, weight: .semibold))
-                            Image("superherobyfede")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 25)
-                            Text("\(users.first?.wallet ?? 0)")
-                                .font(.system(size: 17, weight: .semibold))
-                        }
-                        .padding(.trailing, 240)
-                        .padding(.bottom, 20)
-                        */
                         AvatarView(mask: users.first?.mask, cape: users.first?.cape, gloves: users.first?.gloves, other: users.first?.other)
                         Text("Wardrobe")
                             .font(.system(size: 20, weight: .semibold))

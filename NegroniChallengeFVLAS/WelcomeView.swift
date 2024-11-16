@@ -34,6 +34,7 @@ struct WelcomeView: View {
             
             Button(action: {
                 AddUser()
+                preloadItems()
                 showFullScreenPrompt = true
             }, label: {
                 ZStack {
@@ -59,9 +60,23 @@ struct WelcomeView: View {
         }
     }
     func AddUser() {
-        let user = User()
+        let user = User(wallet: 1000)
         modelContext.insert(user)
     }
+    
+    func preloadItems() {
+        let initialItems = ItemData.items.map { Item(imageName: $0.imageName, component: $0.component, name: $0.name, price: $0.price, color: $0.color, category: $0.category, unlocked: $0.unlocked)}
+            
+            for item in initialItems {
+                modelContext.insert(item)
+            }
+            
+            do {
+                try modelContext.save()
+            } catch {
+                print("Errore durante il salvataggio degli oggetti iniziali: \(error)")
+            }
+        }
     
 }
 

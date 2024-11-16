@@ -115,9 +115,8 @@ struct AvatarView: View {
                     Image("CyanCape")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 195)
-                        .padding(.bottom, 192)
-                        .padding(.leading, 1)
+                        .frame(width: 190)
+                        .padding(.top, 130)
                 case .magenta:
                     Image("MagentaCape")
                         .resizable()
@@ -317,7 +316,5 @@ struct AvatarView: View {
     }
 }
 #Preview {
-    AvatarView(mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .orange, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .red, category: .others))
+    AvatarView(mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .cyan, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .red, category: .others))
 }
-
-//mask: Item(imageName: "herofitredM", name: "Lava Band", price: 20, color: .red, category: .mask), cape: Item(imageName: "herofitrorangeC", name: "Dusk Defender", price: 40, color: .orange, category: .cape), gloves: Item(imageName: "herofitblueG 6", name: "Thunder Fists", price: 30, color: .yellow, category: .gloves), other: Item(imageName: "SPARKLE", name: "Shining Sparkle", price: 70, color: .green, category: .others)
