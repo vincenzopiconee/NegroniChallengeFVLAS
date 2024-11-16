@@ -5,6 +5,10 @@
 //  Created by Vincenzo Picone on 13/11/24.
 //
 
+
+
+
+
 import SwiftUI
 import SwiftData
 
@@ -32,3 +36,5 @@ let userExample = User(
     wallet: 100,
     avatar: AnyView(Image("herofitwithoutnothing"))
 )
+
+

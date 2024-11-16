@@ -6,25 +6,27 @@
 //
 
 
+
+
 import SwiftData
 import UIKit
 
 @Model
-class Item : Identifiable {
-    var id: UUID = UUID()
-    var imageName: String
-    var name: String
-    var price: Int
-    var unlocked: Bool = false
-    
-    init(imageName: String, name: String, price: Int) {
+class Item: Identifiable {
+    @Attribute var id: UUID
+    @Attribute var imageName: String
+    @Attribute var name: String
+    @Attribute var price: Int
+    @Attribute var unlocked: Bool
+
+    init(imageName: String, name: String, price: Int, unlocked: Bool = false) {
         self.id = UUID()
         self.imageName = imageName
         self.name = name
         self.price = price
+        self.unlocked = unlocked
     }
 }
-
 struct ItemData {
     static let items: [Item] = [
         // Red
