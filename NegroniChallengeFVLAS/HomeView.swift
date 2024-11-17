@@ -81,12 +81,19 @@ struct HomeView: View {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 318.0, height: 55)
-                                .background(Color(white: 1.0))
+                                .background(
+                                    Color.gray // Sfondo grigio chiaro opaco
+                                        .blur(radius: 40)
+                                )
+                                .overlay(
+                                    Color.black.opacity(0.01) // Profondità con un overlay scuro
+                                        .blur(radius: 40)
+                                )
                                 .cornerRadius(22.1)
-                                .shadow(color: .red, radius: 4.0, x: 0.0, y: 0.0)
+                            
                             Text(currentText)
-                                .font(.custom("Arial-ItalicMT", size: 15))
-                                .foregroundColor(Color(white: 0.0))
+                                .font(.custom("Arial-ItalicMT", size: 17))
+                                .foregroundColor(.primary) // Colore adattivo per il testo
                                 .multilineTextAlignment(.center)
                                 .frame(width: 299.3, height: 50.0, alignment: .center)
                                 .onAppear {
@@ -101,9 +108,9 @@ struct HomeView: View {
                         VStack {
                             Text("Your score")
                                 .font(.system(size: 18))
-                                .foregroundColor(Color(white: 0.0))
+                                .foregroundColor(.primary)
                                 .frame(width: 86.0, height: 18.0)
-                                .padding(.trailing, 220)
+                                .padding(.trailing, 240)
                             
                             ZStack {
                                 Rectangle()
@@ -111,7 +118,7 @@ struct HomeView: View {
                                     .frame(width: 325.0, height: 19.0)
                                     .background(Color(white: 240.0 / 255.0))
                                     .cornerRadius(29.4)
-                                HStack {
+                                HStack (spacing: 7){
                                     Rectangle()
                                         .foregroundColor(.clear)
                                         .frame(width: 282.0, height: 19.0)
@@ -125,9 +132,8 @@ struct HomeView: View {
                                         .cornerRadius(29.4)
                                     Text("84%")
                                         .font(.system(size: 16))
-                                        .foregroundColor(Color(white: 0.0))
-                                        .multilineTextAlignment(.center)
-                                        .frame(width: 36.0, height: 13.0, alignment: .center)
+                                        .foregroundColor(.black)
+                                        .frame(width: 36.0, height: 13.0)
                                 }
                             }
                         }
@@ -164,4 +170,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environment(\.colorScheme, .dark)
 }

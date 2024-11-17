@@ -32,22 +32,22 @@ struct EditProfileView: View {
                     
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 5) {
-                            WardrobeSection(
+                            WardrobeSelection(
                                 title: "Masks:",
                                 items: user.wardrobe?.filter { $0.category == .mask } ?? [],
                                 selection: $selectedMask
                             )
-                            WardrobeSection(
+                            WardrobeSelection(
                                 title: "Capes:",
                                 items: user.wardrobe?.filter { $0.category == .cape } ?? [],
                                 selection: $selectedCape
                             )
-                            WardrobeSection(
+                            WardrobeSelection(
                                 title: "Gloves:",
                                 items: user.wardrobe?.filter { $0.category == .gloves } ?? [],
                                 selection: $selectedGloves
                             )
-                            WardrobeSection(
+                            WardrobeSelection(
                                 title: "Others:",
                                 items: user.wardrobe?.filter { $0.category == .others } ?? [],
                                 selection: $selectedOther

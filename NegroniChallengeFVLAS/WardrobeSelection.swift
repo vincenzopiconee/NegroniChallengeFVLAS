@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct WardrobeSection: View {
+struct WardrobeSelection: View {
     let title: String
     let items: [Item]
     @Binding var selection: Item?
@@ -19,7 +19,7 @@ struct WardrobeSection: View {
                             }
                             .overlay(
                                 RoundedRectangle(cornerRadius: 17)
-                                    .stroke(selection == item ? Color.black : Color.clear, lineWidth: 3)
+                                    .stroke(selection == item ? Color.accentColor : Color.clear, lineWidth: 3)
                             )
                     }
                 }
@@ -38,5 +38,5 @@ struct WardrobeSection: View {
 }
 
 #Preview {
-    WardrobeSection(title: "Masks", items: [Item(imageName: "exampleImage", name: "Example Item", category: .mask)], selection: .constant(nil))
+    WardrobeSelection(title: "Masks:", items: [Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask)], selection: .constant(nil))
 }
