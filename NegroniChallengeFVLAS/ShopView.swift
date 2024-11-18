@@ -68,13 +68,9 @@ struct ShopView: View {
                 }
                 .navigationTitle("HeroShop")
                 .toolbar {
-                    // HStack con i FitCoins nella barra di navigazione
                     ToolbarItem(placement: .navigationBarTrailing) {
                         HStack(spacing: 5) {
-                            /*
-                            Text("FitCoins:")
-                                .font(.system(size: 17, weight: .semibold))
-                            */
+                            
                             Image("superherobyfede")
                                 .resizable()
                                 .scaledToFit()
@@ -85,37 +81,32 @@ struct ShopView: View {
                     }
                     
                 }
-                // Modal di acquisto
                 if showPurchaseModal, let selectedItem = selectedItem {
                     ZStack {
-                        // Oscuramento completo del background
                         Color.black.opacity(0.5)
-                            .ignoresSafeArea() // Rimuove i margini luminosi verticali
-
-                        // Pop-up centrato
+                            .ignoresSafeArea()
+                        
                         VStack(spacing: 10) {
-                            // Immagine dell'item con spazio sopra per un layout più equilibrato
                             Image(selectedItem.imageName)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 100)
                                 .padding(.top, 15)
                             
-                            // Testo della domanda su una riga
                             Text("Do you want to unlock \(selectedItem.name)?")
                                 .font(.system(size: 14))
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 10)
-                            
-                            // Prezzo con "Price" in grassetto
+                                .foregroundColor(.primary)
                             HStack {
                                 Text("Price:")
                                     .fontWeight(.bold)
+                                    .foregroundColor(.primary)
                                 Text("\(selectedItem.price) FitCoins")
+                                    .foregroundColor(.primary)
                             }
                             .padding(.bottom, 10)
                             
-                            // Pulsanti di conferma e annullamento
                             HStack {
                                 
                                 Button(action: {
@@ -143,10 +134,10 @@ struct ShopView: View {
                             }
                             .padding(.bottom, 15)
                         }
-                        .frame(width: 320)
-                        .background(Color.white)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
+                        .padding()
+                        .background(Color(UIColor.systemGray5))
+                        .cornerRadius(15)
+                        .shadow(radius: 60)
                     }
                     
                 }

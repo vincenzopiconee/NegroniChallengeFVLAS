@@ -25,9 +25,8 @@ class User : Identifiable{
     var other: Item?
     
     init(wallet: Int = 0, mask: Item? = nil, cape: Item? = nil, gloves: Item? = nil, other: Item? = nil) {
-        
-        self.wardrobe = ItemData.items.filter { $0.unlocked }
         self.id = UUID()
+        self.wardrobe = ItemData.items.filter { $0.unlocked }
         self.wallet = wallet
         self.mask = mask
         self.cape = cape

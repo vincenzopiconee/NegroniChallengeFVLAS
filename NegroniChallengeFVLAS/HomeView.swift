@@ -1,12 +1,3 @@
-//
-//  HomeView.swift
-//  NegroniChallengeFVLAS
-//
-//  Created by Vincenzo Picone on 11/11/24.
-//
-
-
-
 import SwiftUI
 import SwiftData
 
@@ -56,8 +47,13 @@ struct HomeView: View {
     ]
     
     @Query var users: [User]
-    @State private var currentText: String = ""
+    @Query var challenges: [Challenge]  // Per recuperare le challenge
     
+    @State private var currentText: String = ""
+    @State private var isChallengeSheetPresented: Bool = false  // Variabile per gestire la presentazione dello sheet
+    @State private var activeChallenge: Challenge?  // Per tenere traccia della challenge attiva
+    
+    // Funzione per ottenere il testo del giorno
     func getTextForToday() -> String {
         let calendar = Calendar.current
         let currentDate = Date()
@@ -67,7 +63,7 @@ struct HomeView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationStack (){
             GeometryReader { geometry in
                 ZStack {
                     VStack {
@@ -95,7 +91,7 @@ struct HomeView: View {
                                 .font(.custom("Arial-ItalicMT", size: 17))
                                 .foregroundColor(.primary) // Colore adattivo per il testo
                                 .multilineTextAlignment(.center)
-                                .frame(width: 299.3, height: 50.0, alignment: .center)
+                                .frame(width: 300, alignment: .center)
                                 .onAppear {
                                     currentText = getTextForToday()
                                     startDailyTextChange()
@@ -105,39 +101,41 @@ struct HomeView: View {
                         
                         Spacer()
                         
-                        VStack {
-                            Text("Your score")
-                                .font(.system(size: 18))
-                                .foregroundColor(.primary)
-                                .frame(width: 86.0, height: 18.0)
-                                .padding(.trailing, 240)
-                            
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                    .frame(width: 325.0, height: 19.0)
-                                    .background(Color(white: 240.0 / 255.0))
-                                    .cornerRadius(29.4)
-                                HStack (spacing: 7){
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(width: 282.0, height: 19.0)
-                                        .background(LinearGradient(
-                                            stops: [
-                                                Gradient.Stop(color: Color(red: 215.0 / 255.0, green: 42.0 / 255.0, blue: 26.0 / 255.0), location: 0.0),
-                                                Gradient.Stop(color: Color(red: 244.0 / 255.0, green: 6.0 / 255.0, blue: 125.0 / 255.0), location: 1.0)
-                                            ],
-                                            startPoint: .leading,
-                                            endPoint: .trailing))
-                                        .cornerRadius(29.4)
-                                    Text("84%")
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.black)
-                                        .frame(width: 36.0, height: 13.0)
-                                }
+                        // Tasto per la challenge attiva o nuova challenge
+                        if let challenge = activeChallenge, challenge.isCompleted == false {
+                            // Se esiste una challenge attiva non completata, mostra il tasto "View Active Challenge"
+                            Button(action: {
+                                // Aggiungi logica per navigare alla schermata della challenge attiva
+                                // Ad esempio, puoi usare un `NavigationLink` per navigare alla schermata dei dettagli
+                                // come `ChallengeDetailsView`
+                            }) {
+                                Text("Active Challenge")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .frame(width: 200, height: 50)
+                                    .background(Color.accentColor)
+                                    .cornerRadius(25)
+                                    .padding()
+                            }
+                            .position(x: geometry.size.width / 2, y: 230)
+                        } else {
+                            // Se non c'è una challenge attiva, mostra il tasto "New Challenge"
+                            Button(action: {
+                                isChallengeSheetPresented.toggle()  // Mostra il sheet per creare una nuova challenge
+                            }) {
+                                Text("New Challenge")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .frame(width: 200, height: 50)
+                                    .background(Color.accentColor)
+                                    .cornerRadius(25)
+                                    .padding()
+                            }
+                            .position(x: geometry.size.width / 2, y: 230)
+                            .sheet(isPresented: $isChallengeSheetPresented) {
+                                ChallengeSetupView(isPresented: $isChallengeSheetPresented)  // La vista da presentare nel sheet
                             }
                         }
-                        .position(x: geometry.size.width / 2, y: 250)
                     }
                 }
             }
@@ -153,8 +151,19 @@ struct HomeView: View {
                     })
             )
         }
+        .onAppear {
+            updateActiveChallenge()
+        }
+        .onChange(of: challenges) {
+            updateActiveChallenge()
+        }
     }
     
+    func updateActiveChallenge() {
+        activeChallenge = challenges.first(where: { !$0.isCompleted })
+    }
+    
+    // Funzione per avviare il cambio del testo quotidiano
     func startDailyTextChange() {
         let calendar = Calendar.current
         let currentDate = Date()
