@@ -7,9 +7,8 @@
 
 
 
-
+import SwiftUI
 import SwiftData
-import UIKit
 
 enum Category: String, Codable {
     case mask

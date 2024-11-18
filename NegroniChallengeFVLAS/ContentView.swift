@@ -26,7 +26,7 @@ struct ContentView: View {
                         Image(systemName: "house")
                         Text("HeroFit")
                     }
-                JourneyView()
+                ChallengeProgressView()
                     .tabItem{
                         Image(systemName: "map")
                         Text("Journey")
