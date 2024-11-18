@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WardrobeSection: View {
+struct WardrobeSectionView: View {
     let title: String
     let items: [Item]
     
@@ -31,5 +31,5 @@ struct WardrobeSection: View {
 }
 
 #Preview {
-    WardrobeSection(title: "Masks:", items: [Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask)])
+    WardrobeSectionView(title: "Masks:", items: [Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask)])
 }

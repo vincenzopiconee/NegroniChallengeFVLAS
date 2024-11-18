@@ -30,10 +30,10 @@ struct ProfileView: View {
                     
                     VStack {
                         if let user = users.first {
-                            WardrobeSection(title: "Masks:", items: user.wardrobe?.filter { $0.category == .mask } ?? [])
-                            WardrobeSection(title: "Capes:", items: user.wardrobe?.filter { $0.category == .cape } ?? [])
-                            WardrobeSection(title: "Gloves:", items: user.wardrobe?.filter { $0.category == .gloves } ?? [])
-                            WardrobeSection(title: "Others:", items: user.wardrobe?.filter { $0.category == .others } ?? [])
+                            WardrobeSectionView(title: "Masks:", items: user.wardrobe?.filter { $0.category == .mask } ?? [])
+                            WardrobeSectionView(title: "Capes:", items: user.wardrobe?.filter { $0.category == .cape } ?? [])
+                            WardrobeSectionView(title: "Gloves:", items: user.wardrobe?.filter { $0.category == .gloves } ?? [])
+                            WardrobeSectionView(title: "Others:", items: user.wardrobe?.filter { $0.category == .others } ?? [])
                         } else {
                             Text("No items found.")
                                 .foregroundColor(.gray)

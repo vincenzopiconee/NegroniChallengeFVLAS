@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct WardrobeSelection: View {
+struct WardrobeSelectionView: View {
     let title: String
     let items: [Item]
     @Binding var selection: Item?
@@ -38,5 +38,5 @@ struct WardrobeSelection: View {
 }
 
 #Preview {
-    WardrobeSelection(title: "Masks:", items: [Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask)], selection: .constant(nil))
+    WardrobeSelectionView(title: "Masks:", items: [Item(imageName: "herofitredM", name: "Blaze Band", price: 100, color: .red, category: .mask)], selection: .constant(nil))
 }

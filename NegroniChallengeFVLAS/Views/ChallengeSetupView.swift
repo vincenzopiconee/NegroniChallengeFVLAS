@@ -25,32 +25,33 @@ struct ChallengeSetupView: View {
 
     var body: some View {
         NavigationStack {
-            VStack (spacing: 50) {
+            VStack (alignment: .leading, spacing: 50) {
                 
-                VStack(alignment: .leading) {
+                HStack() {
                     Text("Duration")
                         .font(.headline)
+                    Spacer()
                     
                     Picker("Duration", selection: $selectedDuration) {
                         ForEach(1..<5, id: \.self) { week in
                             Text("\(week) week(s)")
                         }
                     }
-                    .pickerStyle(SegmentedPickerStyle()) // Segmentato per visualizzare bene le settimane
+                    .pickerStyle(WheelPickerStyle())
                 }
                 .padding(.top)
                 .padding(.horizontal)
                 
                 // Selezione dell'obiettivo (Passi o Distanza)
-                VStack(alignment: .leading) {
+                HStack() {
                     Text("Choose Your Goal")
                         .font(.headline)
-                    
+                    Spacer()
                     Picker("Goal Type", selection: $selectedGoalType) {
                         Text("Steps").tag("Steps")
                         Text("Kilometers").tag("Kilometers")
                     }
-                    .pickerStyle(SegmentedPickerStyle())
+                    .pickerStyle(MenuPickerStyle())
                 }
                 .padding(.horizontal)
                 
@@ -71,25 +72,20 @@ struct ChallengeSetupView: View {
                     }
                 }
                 .padding(.horizontal)
-                
-                Spacer()
-                
-                // Bottone per avviare la challenge
-                Button(action: startChallenge) {
-                    Text("Start Challenge")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.accentColor)
-                        .foregroundColor(.white)
-                        .cornerRadius(17)
-                }
-                .padding()
-                
-                Spacer()
-                
             }
+            Spacer()
+            Button(action: startChallenge) {
+                Text("Start Challenge")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding()
+                    .frame(width: 250)
+                    .background(Color.accentColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(17)
+            }
+            .padding()
+            Spacer()
             .onAppear {
                 // Richiedere permessi a HealthKit quando la vista appare
                 healthKitManager.requestAuthorization { success in
