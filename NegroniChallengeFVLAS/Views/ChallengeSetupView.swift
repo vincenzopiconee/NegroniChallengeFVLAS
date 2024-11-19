@@ -4,21 +4,22 @@
 //
 //  Created by Vincenzo Picone on 17/11/24.
 //
-
 import SwiftUI
-import HealthKit
 import SwiftData
+import HealthKit
 
 struct ChallengeSetupView: View {
     
-    @Binding var isPresented: Bool
+    @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext  // Contesto per SwiftData
     
     @State private var selectedDuration: Int = 1  // Durata della challenge in settimane
     @State private var selectedGoalType: String = "Steps"  // Tipo di obiettivo (passi o chilometri)
     
     @State private var stepsGoal: Int = 10000  // Obiettivo di passi
-    @State private var distanceGoal: Double = 8.0  // Obiettivo di distanza in chilometri
+    @State private var distanceGoal: Double = 6.5  // Obiettivo di distanza in chilometri
+    
+    @State private var reward: Int = 100  // Variabile per tenere traccia del reward calcolato
     
     @StateObject private var healthKitManager = HealthKitManager()  // Manager per interagire con HealthKit
     @State private var challengeStarted = false  // Flag per sapere se la challenge è iniziata
@@ -52,6 +53,10 @@ struct ChallengeSetupView: View {
                         Text("Kilometers").tag("Kilometers")
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .onChange(of: selectedGoalType) {
+                        // Calcolare il reward ogni volta che cambia il goal type
+                        updateReward()
+                    }
                 }
                 .padding(.horizontal)
                 
@@ -63,13 +68,36 @@ struct ChallengeSetupView: View {
                             .font(.headline)
                         
                         Stepper("Steps Goal: \(stepsGoal)", value: $stepsGoal, in: 1000...50000, step: 1000)
+                            .onChange(of: stepsGoal) {
+                                // Calcolare il reward ogni volta che cambia il valore del goal
+                                updateReward()
+                            }
                     } else {
                         // Se è selezionato "Distanza"
                         Text("Distance Goal (km)")
                             .font(.headline)
                         
                         Stepper("Distance Goal: \(distanceGoal, specifier: "%.1f") km", value: $distanceGoal, in: 1...50, step: 0.5)
+                            .onChange(of: distanceGoal) {
+                                // Calcolare il reward ogni volta che cambia il valore del goal
+                                updateReward()
+                            }
                     }
+                    
+                    // Mostra il reward calcolato sotto lo stepper
+                    HStack (spacing: 2){
+                        Spacer()
+                        Text("Reward: \(reward)")
+                            .font(.title2)
+                            .foregroundColor(.accentColor)
+                        Image("superherobyfede")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                        Spacer()
+                    }
+                    .padding(.top)
+                    
                 }
                 .padding(.horizontal)
             }
@@ -101,7 +129,7 @@ struct ChallengeSetupView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
-                        isPresented = false  // Chiudi il foglio quando si preme "Cancel"
+                        dismiss()  // Chiudi il foglio quando si preme "Cancel"
                     }
                 }
                 
@@ -109,33 +137,59 @@ struct ChallengeSetupView: View {
         }
     }
     
+    // Funzione per calcolare il reward
+    private func calculateReward(goalType: GoalType, goal: Double) -> Int {
+        switch goalType {
+        case .steps:
+            // Ogni 1500 passi danno 10 coin
+            return Int(goal / 1000) * 10
+            
+        case .kilometers:
+            // Ogni 1 km dà 10 coin
+            return Int(goal * 10)
+        }
+    }
+    
+    // Funzione per aggiornare il reward
+    private func updateReward() {
+        let goalType: GoalType = selectedGoalType == "Steps" ? .steps : .kilometers
+        let goal = selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal
+        reward = calculateReward(goalType: goalType, goal: goal)
+    }
+    
     // Funzione per avviare la challenge
     private func startChallenge() {
         print("Starting challenge with goal: \(selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal) \(selectedGoalType)")
         
-        // Crea l'oggetto Challenge
+        // Calcola il tipo di obiettivo
         let goalType: GoalType = selectedGoalType == "Steps" ? .steps : .kilometers
+        
+        // Calcola il reward in base al goal
+        let challengeReward = calculateReward(goalType: goalType, goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        // Crea l'oggetto Challenge
         let challenge = Challenge(goalType: goalType,
                                   duration: selectedDuration,
                                   goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
-                                  startDate: Date())
+                                  startDate: /*dateFormatter.date(from: "16/11/2024") ?? */Date(),
+                                  reward: challengeReward)  // Assegna il reward calcolato
         
         // Aggiungi la challenge al database
         do {
             modelContext.insert(challenge)
             try modelContext.save()
+            print("Challenge started successfully with reward: \(challengeReward)")
         } catch {
             print("Error saving challenge: \(error)")
         }
         
         // Chiudi la vista di setup
-        isPresented = false
+        dismiss()
     }
-    
-    
 }
 
 #Preview {
-    ChallengeSetupView(isPresented: .constant(true))
+    ChallengeSetupView()
         .environment(\.colorScheme, .dark)
 }

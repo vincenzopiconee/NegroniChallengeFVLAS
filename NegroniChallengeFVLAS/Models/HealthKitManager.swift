@@ -70,5 +70,61 @@ class HealthKitManager: ObservableObject {
         
         healthStore.execute(query)
     }
+    
+    func getSteps(from startDate: Date, completion: @escaping (Double) -> Void) {
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
+        let sampleType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        
+        let query = HKStatisticsQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            let steps = result?.sumQuantity()?.doubleValue(for: .count()) ?? 0
+            DispatchQueue.main.async {
+                completion(steps)
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    func getDistance(from startDate: Date, completion: @escaping (Double) -> Void) {
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
+        let sampleType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        
+        let query = HKStatisticsQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            let distance = result?.sumQuantity()?.doubleValue(for: .meter()) ?? 0
+            DispatchQueue.main.async {
+                completion(distance)
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    func getDailyStats(startDate: Date, endDate: Date, type: GoalType, completion: @escaping ([DailyProgress]) -> Void) {
+        let sampleType = type == .steps ?
+            HKQuantityType.quantityType(forIdentifier: .stepCount)! :
+            HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let query = HKStatisticsCollectionQuery(
+            quantityType: sampleType,
+            quantitySamplePredicate: predicate,
+            options: .cumulativeSum,
+            anchorDate: startDate,
+            intervalComponents: DateComponents(day: 1)
+        )
+        
+        query.initialResultsHandler = { _, results, _ in
+            var dailyProgress: [DailyProgress] = []
+            results?.enumerateStatistics(from: startDate, to: endDate) { statistics, _ in
+                let value = statistics.sumQuantity()?.doubleValue(for: type == .steps ? .count() : .meter()) ?? 0
+                dailyProgress.append(DailyProgress(date: statistics.startDate, value: value))
+            }
+            DispatchQueue.main.async {
+                completion(dailyProgress)
+            }
+        }
+        
+        healthStore.execute(query)
+    }
+    
+    
 }
 

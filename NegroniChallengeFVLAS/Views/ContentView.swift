@@ -20,16 +20,17 @@ struct ContentView: View {
         if users.isEmpty {
             WelcomeView()
         } else {
+            
             TabView {
                 HomeView()
                     .tabItem{
                         Image(systemName: "house")
                         Text("HeroFit")
                     }
-                ChallengeProgressView()
+                HistoryView()
                     .tabItem{
-                        Image(systemName: "map")
-                        Text("Journey")
+                        Image(systemName: "clock.arrow.circlepath")
+                        Text("History")
                     }
                 ShopView()
                     .tabItem{

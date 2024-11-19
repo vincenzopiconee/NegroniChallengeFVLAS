@@ -33,6 +33,4 @@ class User : Identifiable{
         self.gloves = gloves
         self.other = other
     }
-    
-    
 }

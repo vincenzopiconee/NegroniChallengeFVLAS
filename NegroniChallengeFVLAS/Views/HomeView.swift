@@ -104,11 +104,7 @@ struct HomeView: View {
                         // Tasto per la challenge attiva o nuova challenge
                         if let challenge = activeChallenge, challenge.isCompleted == false {
                             // Se esiste una challenge attiva non completata, mostra il tasto "View Active Challenge"
-                            Button(action: {
-                                // Aggiungi logica per navigare alla schermata della challenge attiva
-                                // Ad esempio, puoi usare un `NavigationLink` per navigare alla schermata dei dettagli
-                                // come `ChallengeDetailsView`
-                            }) {
+                            NavigationLink(destination: ActiveChallengeView()) {
                                 Text("Active Challenge")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.white)
@@ -118,6 +114,7 @@ struct HomeView: View {
                                     .padding()
                             }
                             .position(x: geometry.size.width / 2, y: 230)
+                            
                         } else {
                             // Se non c'è una challenge attiva, mostra il tasto "New Challenge"
                             Button(action: {
@@ -133,7 +130,7 @@ struct HomeView: View {
                             }
                             .position(x: geometry.size.width / 2, y: 230)
                             .sheet(isPresented: $isChallengeSheetPresented) {
-                                ChallengeSetupView(isPresented: $isChallengeSheetPresented)  // La vista da presentare nel sheet
+                                ChallengeSetupView()  // La vista da presentare nel sheet
                             }
                         }
                     }
@@ -160,7 +157,13 @@ struct HomeView: View {
     }
     
     func updateActiveChallenge() {
-        activeChallenge = challenges.first(where: { !$0.isCompleted })
+        // Se non ci sono challenge non completate, mostra il tasto per una nuova challenge
+        if let challenge = challenges.first(where: { !$0.isCompleted }) {
+            activeChallenge = challenge  // Imposta la challenge attiva
+        } else {
+            activeChallenge = nil  // Se non ci sono challenge attive, imposta a nil
+        }
+        
     }
     
     // Funzione per avviare il cambio del testo quotidiano
