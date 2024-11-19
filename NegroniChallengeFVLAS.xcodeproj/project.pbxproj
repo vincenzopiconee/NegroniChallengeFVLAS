@@ -257,8 +257,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = HeroFit;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "La tua app necessita di accesso ai dati di salute per visualizzare i tuoi allenamenti e altre informazioni correlate";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "La tua app necessita di accesso ai dati di salute per registrare i tuoi allenamenti e monitorare i progressi";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your app requires access to health data to display your workouts and other related information.\n\n\n\n\n\nYour app requires access to health data to display your workouts and other related information.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your app requires access to health data to log your workouts and track your progress.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -291,8 +291,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = HeroFit;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "La tua app necessita di accesso ai dati di salute per visualizzare i tuoi allenamenti e altre informazioni correlate";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "La tua app necessita di accesso ai dati di salute per registrare i tuoi allenamenti e monitorare i progressi";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your app requires access to health data to display your workouts and other related information.\n\n\n\n\n\nYour app requires access to health data to display your workouts and other related information.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your app requires access to health data to log your workouts and track your progress.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

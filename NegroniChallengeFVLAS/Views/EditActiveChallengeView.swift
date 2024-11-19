@@ -94,13 +94,19 @@ struct EditActiveChallengeView: View {
                     }
                 }
             }
-            .alert("Are you sure you want to delete the challenge? \nYou will lose all your progress", isPresented: $showDeleteAlert) {
-                Button("Delete", role: .destructive) {
-                    deleteChallenge() // Call delete method
-                }
-                Button("Cancel", role: .cancel) {
-                    showDeleteAlert = false // Close alert
-                }
+            .alert(isPresented: $showDeleteAlert) {
+                Alert(
+                    title: Text("Delete Active Challenge?"),
+                    message: Text("You will lose all your progress.")
+                        .font(.footnote) // Smaller text
+                        .foregroundColor(.gray), // Gray color
+                    primaryButton: .destructive(Text("Delete")) {
+                        deleteChallenge() // Call delete method
+                    },
+                    secondaryButton: .cancel(Text("Cancel")) {
+                        showDeleteAlert = false // Close alert
+                    }
+                )
             }
         }
     }
