@@ -41,7 +41,7 @@ struct ProfileView: View {
                     }
                 }
             }
-            .navigationTitle("Your Avatar")
+            .navigationTitle("Your Hero")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button("Edit") {
                 showEditModal.toggle()

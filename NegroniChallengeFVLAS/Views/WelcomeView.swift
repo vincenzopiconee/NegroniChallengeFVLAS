@@ -14,80 +14,106 @@ struct WelcomeView: View {
     @State private var showFullScreenPrompt = false
 
     var body: some View {
-        ZStack {
-            // Sfondo sfocato
-            Color.gray.opacity(100)
-            
-            LinearGradient(
-                stops: [
-                    Gradient.Stop(color: Color(red: 215.0 / 255.0, green: 42.0 / 255.0, blue: 26.0 / 255.0), location: 0.0),
-                    Gradient.Stop(color: Color(red: 244.0 / 255.0, green: 6.0 / 255.0, blue: 125.0 / 255.0), location: 1.0)],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-             
-            .edgesIgnoringSafeArea(.all)
-            .blur(radius: 40)
-            //.cornerRadius(50)
-
-            VStack(spacing: 40) {
-                // Logo e nome dell'app
-                VStack(spacing: 10) {
-                    Image("ICON")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 180)
-                        .cornerRadius(12)
-                        .shadow(radius: 10)
-                    
-                    Text("HeroFit")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-                        .shadow(radius: 10)
-                }
-                
-                // Citazione stilizzata
-                Text("\"STEP UP POWER UP HERO UP\"")
-                    .font(.custom("Arial-ItalicMT", size: 36))
-                    .foregroundColor(.white)
+        VStack() {
+            Spacer()
+            // Logo e nome dell'app
+            HStack {
+                Text("Welcome to ")
+                    .foregroundStyle(.primary)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-                
-                // Pulsante di avvio
-                Button(action: {
-                    AddUser()
-                    preloadItems()
-                    showFullScreenPrompt = true
-                }) {
-                    ZStack {
-                        // Gradiente del pulsant
+                Text("HeroFit")
+                    .foregroundStyle(.primary)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.accent)
+            }
+            
+            VStack(alignment: .leading, spacing: 20) { // Spaziatura uniforme tra ogni HStack
+                HStack(alignment: .center, spacing: 15) { // Minor spacing tra icona e testo
+                    Image(systemName: "figure.walk.motion")
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                        .foregroundStyle(Color.accentColor)
+                    
+                    VStack(alignment: .leading, spacing: 5) { // Minor spacing tra i testi
+                        Text("Step Up")
+                            .fontWeight(.bold)
+                            .font(.title3)
+                            .foregroundStyle(.primary)
                         
-                        LinearGradient(
-                            stops: [
-                                Gradient.Stop(color: Color(red: 215.0 / 255.0, green: 42.0 / 255.0, blue: 26.0 / 255.0), location: 0.0),
-                                Gradient.Stop(color: Color(red: 244.0 / 255.0, green: 6.0 / 255.0, blue: 125.0 / 255.0), location: 1.0)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .cornerRadius(30)
-                        .frame(width: 250, height: 55)
-                        .shadow(radius: 10)
-
-                        // Testo del pulsante
-                        Text("Start Your Journey")
-                            .bold()
-                            .foregroundColor(.white)
-                            .font(.title2)
-                            .shadow(radius: 5)
+                        Text("Keep up with your fitness routine")
+                            .font(.body)
+                            .foregroundColor(.secondary) // Colore più tenue per il sottotitolo
                     }
                 }
-                .fullScreenCover(isPresented: $showFullScreenPrompt) {
-                    ContentView()
+                
+                HStack(alignment: .center, spacing: 15) {
+                    Image(systemName: "bolt.ring.closed")
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                        .foregroundStyle(Color.accentColor)
+                    
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Power Up")
+                            .fontWeight(.bold)
+                            .font(.title3)
+                            .foregroundStyle(.primary)
+                        
+                        Text("Complete your challenges and boost your energy")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
                 }
-                .padding(.top)
+                
+                HStack(alignment: .center, spacing: 15) {
+                    Image(systemName: "wand.and.sparkles")
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                        .foregroundStyle(Color.accentColor)
+                    
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Hero Up")
+                            .fontWeight(.bold)
+                            .font(.title3)
+                            .foregroundStyle(.primary)
+                        
+                        Text("Discover your rewards and personalise your hero")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
-            .padding()
-            .padding(20)
+            .padding() // Margine complessivo per il contenitore VStack
+
+            
+            Spacer()
+             
+            
+            // Pulsante di avvio
+            Button(action: {
+                AddUser()
+                preloadItems()
+                showFullScreenPrompt = true
+            }) {
+                Text("Continue")
+                    .fontWeight(.bold)
+                    .font(.title3)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(UIColor.systemGray2))
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+            }
+            .padding(.horizontal, 20)
+            .fullScreenCover(isPresented: $showFullScreenPrompt) {
+                ContentView()
+            }
+            .padding(.top)
+            
+            Spacer()
         }
         .ignoresSafeArea()
     }
@@ -116,6 +142,6 @@ struct WelcomeView: View {
 
 #Preview {
     WelcomeView()
-        .environment(\.colorScheme, .dark)
+        .environment(\.colorScheme, .light)
 }
 

@@ -48,17 +48,7 @@ struct ActiveChallengeView: View {
                     ScrollView {
                         VStack(spacing: 20) {
                             
-                            if isChallengeCompleted {
-                                Toggle(isOn: $isOnToggle) {
-                                    Text("COMPLETE THE CHALLENGE")
-                                        .fontWeight(.bold)
-                                }
-                                .padding()
-                                .onChange(of: isOnToggle) {
-                                    completeChallengeAndUpdateWallet(challenge)
-                                }
-                                
-                            }
+                            
                             
                             // Progress Section
                             VStack(spacing: 12) {
@@ -156,7 +146,7 @@ struct ActiveChallengeView: View {
                                             .frame(width: 25)
                                     }
                                     
-                                    Text("Gain your Fitcoin!")
+                                    Text("Gain your Fitcoin and buy new equipment!")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                         .multilineTextAlignment(.center)
@@ -212,6 +202,21 @@ struct ActiveChallengeView: View {
                                     .fill(Color(.systemGray6))
                             )
                             .padding(.horizontal)
+                                                        
+                            if isChallengeCompleted {
+                                Button(action: {
+                                    completeChallengeAndUpdateWallet(challenge)
+                                }) {
+                                    Text("Claim your reward")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                        .frame(width: 300, height: 40)
+                                        .background(Color.accentColor)
+                                        .cornerRadius(20)
+                                }
+                                .padding()
+                            }
+
                             
                             Spacer()
                         }
