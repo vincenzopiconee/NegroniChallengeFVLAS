@@ -17,7 +17,8 @@ struct ActiveChallengeView: View {
     @Query var users: [User]
     
     @Environment(\.dismiss) var dismiss
-
+    
+    @State private var showDeleteAlert: Bool = false
     
     @StateObject private var healthKitManager = HealthKitManager()
         
@@ -205,16 +206,15 @@ struct ActiveChallengeView: View {
                                                         
                             if isChallengeCompleted {
                                 Button(action: {
-                                    completeChallengeAndUpdateWallet(challenge)
+                                    showDeleteAlert = true
                                 }) {
                                     Text("Claim your reward")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
-                                        .frame(width: 300, height: 40)
+                                        .frame(width: 270, height: 30)
                                         .background(Color.accentColor)
                                         .cornerRadius(20)
                                 }
-                                .padding()
                             }
 
                             
@@ -270,7 +270,22 @@ struct ActiveChallengeView: View {
                             checkCompletion(for: challenge)
                         }
                 }
-                
+            }
+            .alert(isPresented: $showDeleteAlert) {
+                Alert(
+                    title: Text("Claim reward?"),
+                    message: Text("Editing this challenge will no longer be allowed.")
+                        .font(.footnote) // Smaller text
+                        .foregroundColor(.gray), // Gray color
+                    primaryButton: .destructive(Text("Continue")) {
+                        if let challenge = currentChallenge {
+                            completeChallengeAndUpdateWallet(challenge)
+                        } // Call delete method
+                    },
+                    secondaryButton: .cancel(Text("Cancel")) {
+                        showDeleteAlert = false // Close alert
+                    }
+                )
             }
              
         }
