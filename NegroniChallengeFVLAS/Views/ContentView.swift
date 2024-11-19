@@ -24,7 +24,7 @@ struct ContentView: View {
             TabView {
                 HomeView()
                     .tabItem{
-                        Image(systemName: "house")
+                        Image(systemName: "poweroutlet.type.f.fill")
                         Text("HeroFit")
                     }
                 HistoryView()
