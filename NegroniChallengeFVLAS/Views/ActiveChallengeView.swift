@@ -174,28 +174,47 @@ struct ActiveChallengeView: View {
                                     Spacer()
                                 }
                                 
-                                Chart(weeklyProgress) { progress in
-                                    BarMark(
-                                        x: .value("Day", progress.date, unit: .day),
-                                        y: .value("Value", progress.value)
-                                    )
-                                    .foregroundStyle(Color.accentColor)
-                                }
-                                .chartXAxis {
-                                    AxisMarks(values: .stride(by: .day)) { value in
-                                        AxisGridLine()
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    ScrollViewReader { proxy in
+                                        HStack {
+                                            Chart(weeklyProgress) { progress in
+                                                BarMark(
+                                                    x: .value("Day", progress.date, unit: .day),
+                                                    y: .value("Value", progress.value)
+                                                )
+                                                .foregroundStyle(Color.accentColor)
+                                                .cornerRadius(5)
+                                            }
+                                            .chartXAxis {
+                                                AxisMarks(values: .stride(by: .day)) { value in
+                                                    AxisGridLine()
+                                                    
+                                                    // Formattazione delle etichette con giorno
+                                                    AxisValueLabel {
+                                                        if let date = value.as(Date.self) {
+                                                            Text(date, format: .dateTime.day().month(.abbreviated))
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            .frame(height: 250) // Altezza del grafico
+                                            .frame(width: max(CGFloat(weeklyProgress.count) * 55, 82)) // Larghezza dinamica basata sul numero di barre
+                                            .padding(.top, 5)
+                                            .id("lastItem") // Imposta un ID per l'ultimo elemento
+                                        }
 
-                                        // Formattazione delle etichette con giorno
-                                        AxisValueLabel {
-                                            if let date = value.as(Date.self) {
-                                                Text(date, format: .dateTime.weekday(.abbreviated).day().month(.abbreviated))
+                                        .onAppear {
+                                            // Scrolla all'ultimo elemento
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                proxy.scrollTo("lastItem", anchor: .trailing)
                                             }
                                         }
+                                        
+                                
                                     }
                                 }
-                                .frame(height: 200)
-
-
+                                .frame(height: 250) // Altezza totale con margini
+                                
                             }
                             .padding()
                             .background(
@@ -211,7 +230,7 @@ struct ActiveChallengeView: View {
                                     Text("Claim your reward")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
-                                        .frame(width: 250)
+                                        .frame(width: 300, height: 40)
                                         .background(Color.accentColor)
                                         .cornerRadius(20)
                                 }
@@ -277,7 +296,7 @@ struct ActiveChallengeView: View {
                     message: Text("Editing this challenge will no longer be allowed.")
                         .font(.footnote) // Smaller text
                         .foregroundColor(.gray), // Gray color
-                    primaryButton: .destructive(Text("Continue")) {
+                    primaryButton: .default(Text("Continue")) {
                         if let challenge = currentChallenge {
                             completeChallengeAndUpdateWallet(challenge)
                         } // Call delete method
@@ -291,6 +310,7 @@ struct ActiveChallengeView: View {
         }
     }
     
+        
     private func checkAndDismissIfNoActiveChallenge() {
         if challenges.isEmpty || challenges.allSatisfy({ $0.isCompleted == true }) {
             dismiss() // Se non ci sono challenge attive, chiudi la vista

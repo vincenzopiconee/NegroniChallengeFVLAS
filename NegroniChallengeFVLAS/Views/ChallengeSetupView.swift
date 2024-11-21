@@ -191,7 +191,7 @@ struct ChallengeSetupView: View {
             goalType: goalType,
             duration: selectedDuration,
             goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
-            startDate: /*dateFormatter.date(from: "16/11/2024") ?? */Date(),
+            startDate: /*dateFormatter.date(from: "1/11/2024") ?? */Date(),
             reward: challengeReward
         )  // Assegna il reward calcolato
         

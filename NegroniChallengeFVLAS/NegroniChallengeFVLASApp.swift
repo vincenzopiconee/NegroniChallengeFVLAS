@@ -10,6 +10,12 @@ import SwiftData
 
 @main
 struct NegroniChallengeFVLASApp: App {
+    
+    init() {
+        // Impostiamo il colore per tutti i pulsanti in UIAlertController
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
