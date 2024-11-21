@@ -22,7 +22,8 @@ struct ChallengeSetupView: View {
     @State private var reward: Int = 100  // Variabile per tenere traccia del reward calcolato
     
     @StateObject private var healthKitManager = HealthKitManager()  // Manager per interagire con HealthKit
-    @State private var challengeStarted = false  // Flag per sapere se la challenge è iniziata
+    //@State private var challengeStarted = false  // Flag per sapere se la challenge è iniziata
+    @State private var showAlert = false
 
     var body: some View {
         NavigationStack {
@@ -102,7 +103,7 @@ struct ChallengeSetupView: View {
                 .padding(.horizontal)
             }
             Spacer()
-            Button(action: startChallenge) {
+            Button(action: {showAlert = true}) {
                 Text("Start Challenge")
                     .font(.title2)
                     .fontWeight(.bold)
@@ -130,8 +131,22 @@ struct ChallengeSetupView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
                         dismiss()  // Chiudi il foglio quando si preme "Cancel"
+                        print("Dismiss called")
                     }
                 }
+                
+            }
+            .alert("Confirm Challenge", isPresented: $showAlert) {
+                Button("Confirm") {
+                    startChallenge()  // Procedi con il salvataggio e chiudi la vista
+                    
+                }
+                Button("Cancel", role: .cancel) {
+                    // Non fare nulla, l'alert si chiude automaticamente
+                    
+                }
+            } message: {
+                Text("Are you sure you want to start this challenge?")
                 
             }
         }
@@ -158,7 +173,10 @@ struct ChallengeSetupView: View {
     }
     
     // Funzione per avviare la challenge
+    
+    
     private func startChallenge() {
+        
         print("Starting challenge with goal: \(selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal) \(selectedGoalType)")
         
         // Calcola il tipo di obiettivo
@@ -169,23 +187,28 @@ struct ChallengeSetupView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         // Crea l'oggetto Challenge
-        let challenge = Challenge(goalType: goalType,
-                                  duration: selectedDuration,
-                                  goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
-                                  startDate: /*dateFormatter.date(from: "16/11/2024") ?? */Date(),
-                                  reward: challengeReward)  // Assegna il reward calcolato
+        let challenge = Challenge(
+            goalType: goalType,
+            duration: selectedDuration,
+            goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
+            startDate: /*dateFormatter.date(from: "16/11/2024") ?? */Date(),
+            reward: challengeReward
+        )  // Assegna il reward calcolato
         
         // Aggiungi la challenge al database
         do {
             modelContext.insert(challenge)
             try modelContext.save()
             print("Challenge started successfully with reward: \(challengeReward)")
+            
+            
         } catch {
             print("Error saving challenge: \(error)")
+            
         }
         
-        // Chiudi la vista di setup
         dismiss()
+     
     }
 }
 

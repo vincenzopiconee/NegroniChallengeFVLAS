@@ -119,7 +119,7 @@ struct ActiveChallengeView: View {
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                         .multilineTextAlignment(.center)
-                                        .padding(.horizontal, 8)
+                                        .padding(.horizontal, 5)
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -147,11 +147,11 @@ struct ActiveChallengeView: View {
                                             .frame(width: 25)
                                     }
                                     
-                                    Text("Gain your Fitcoin and buy new equipment!")
+                                    Text("Gain your Fitcoin and unlock new items!")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                         .multilineTextAlignment(.center)
-                                        .padding(.horizontal, 8)
+                                        .padding(.horizontal, 5)
                                     
                                 }
                                 .frame(maxWidth: .infinity)
@@ -211,7 +211,7 @@ struct ActiveChallengeView: View {
                                     Text("Claim your reward")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
-                                        .frame(width: 270, height: 30)
+                                        .frame(width: 250)
                                         .background(Color.accentColor)
                                         .cornerRadius(20)
                                 }
