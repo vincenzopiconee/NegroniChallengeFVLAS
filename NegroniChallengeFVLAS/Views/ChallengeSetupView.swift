@@ -200,12 +200,14 @@ struct ChallengeSetupView: View {
             
             let goalType: GoalType = selectedGoalType == "Steps" ? .steps : .kilometers
             let challengeReward = calculateReward(goalType: goalType, goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yyyy"
             
             let challenge = Challenge(
                 goalType: goalType,
                 duration: selectedDuration,
                 goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
-                startDate: /*dateFormatter.date(from: "1/11/2024") ?? */Date(),
+                startDate: /*dateFormatter.date(from: "1/11/2024") ?? */ Date(),
                 reward: challengeReward
             )
             
