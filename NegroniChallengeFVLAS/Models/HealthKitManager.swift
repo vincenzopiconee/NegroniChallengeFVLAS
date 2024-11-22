@@ -10,6 +10,12 @@ import HealthKit
 class HealthKitManager: ObservableObject {
     private let healthStore = HKHealthStore()
     
+    func checkAuthorizationStatus(completion: @escaping (Bool) -> Void) {
+        let status = HKHealthStore().authorizationStatus(for: HKQuantityType.quantityType(forIdentifier: .stepCount)!)
+        completion(status == .sharingAuthorized)
+    }
+
+    
     // Richiedi permesso per leggere e scrivere passi e distanza percorsa
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
         // I dati che vogliamo leggere e scrivere

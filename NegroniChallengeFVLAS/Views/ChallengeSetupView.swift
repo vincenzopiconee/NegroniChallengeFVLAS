@@ -24,6 +24,9 @@ struct ChallengeSetupView: View {
     @StateObject private var healthKitManager = HealthKitManager()  // Manager per interagire con HealthKit
     //@State private var challengeStarted = false  // Flag per sapere se la challenge è iniziata
     @State private var showAlert = false
+    
+    @State private var healthKitAccessDenied = false  // Mostra un avviso se l'accesso a HealthKit è negato
+
 
     var body: some View {
         NavigationStack {
@@ -149,6 +152,15 @@ struct ChallengeSetupView: View {
                 Text("Are you sure you want to start this challenge?")
                 
             }
+            
+            .alert("HealthKit Access Denied", isPresented: $healthKitAccessDenied) {
+                Button("OK") {
+                    healthKitAccessDenied = false
+                }
+            } message: {
+                Text("The challenge won't track your progress until you grant HealthKit access. Please go to Settings to enable it.")
+            }
+
         }
     }
     
@@ -172,44 +184,44 @@ struct ChallengeSetupView: View {
         reward = calculateReward(goalType: goalType, goal: goal)
     }
     
-    // Funzione per avviare la challenge
-    
-    
     private func startChallenge() {
-        
-        print("Starting challenge with goal: \(selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal) \(selectedGoalType)")
-        
-        // Calcola il tipo di obiettivo
-        let goalType: GoalType = selectedGoalType == "Steps" ? .steps : .kilometers
-        
-        // Calcola il reward in base al goal
-        let challengeReward = calculateReward(goalType: goalType, goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        // Crea l'oggetto Challenge
-        let challenge = Challenge(
-            goalType: goalType,
-            duration: selectedDuration,
-            goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
-            startDate: /*dateFormatter.date(from: "1/11/2024") ?? */Date(),
-            reward: challengeReward
-        )  // Assegna il reward calcolato
-        
-        // Aggiungi la challenge al database
-        do {
-            modelContext.insert(challenge)
-            try modelContext.save()
-            print("Challenge started successfully with reward: \(challengeReward)")
+        // Verifica se HealthKit è autorizzato
+        healthKitManager.checkAuthorizationStatus { authorized in
+            if !authorized {
+                // Mostra l'avviso se l'accesso è negato
+                DispatchQueue.main.async {
+                    healthKitAccessDenied = true
+                }
+                return
+            }
             
+            // Procedi con l'avvio della challenge se autorizzato
+            print("Starting challenge with goal: \(selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal) \(selectedGoalType)")
             
-        } catch {
-            print("Error saving challenge: \(error)")
+            let goalType: GoalType = selectedGoalType == "Steps" ? .steps : .kilometers
+            let challengeReward = calculateReward(goalType: goalType, goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal)
             
+            let challenge = Challenge(
+                goalType: goalType,
+                duration: selectedDuration,
+                goal: selectedGoalType == "Steps" ? Double(stepsGoal) : distanceGoal,
+                startDate: /*dateFormatter.date(from: "1/11/2024") ?? */Date(),
+                reward: challengeReward
+            )
+            
+            do {
+                modelContext.insert(challenge)
+                try modelContext.save()
+                print("Challenge started successfully with reward: \(challengeReward)")
+            } catch {
+                print("Error saving challenge: \(error)")
+            }
+            
+            dismiss()
         }
-        
-        dismiss()
-     
     }
+
+    
 }
 
 #Preview {
